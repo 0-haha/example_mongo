@@ -1,0 +1,15 @@
+machine github.com
+login <username>
+password <access token OR password>
+# second account authentication
+# set your git remote as
+# `git remote set-url [origin] https://[username2]@github.com/[repo name]`
+login <username2>
+password <access token OR password>
+
+machine api.github.com
+login <username>
+password <access token OR password>
+# second account authentication
+login <username2>
+password <access token OR password>

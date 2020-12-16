@@ -1,0 +1,44 @@
+{
+  "MongoDB": {
+    "Host": "mongo",
+    "Port": "27017",
+    "DBName": "gtest",
+    "User": "test",
+    "PW": "password",
+    "AdminDBName": "admin",
+    "Options" : {
+      "retryWrites": false
+    }
+  },
+  "Redis": {
+    "Addrs": [
+      "redis:6379"
+    ],
+    "PW": "password"
+  },
+  "Session": {
+    "IdLength":  32,
+    "KeyPrefix": "demo_mongo_sess_",
+    "Options": {
+      "Path":   "/",
+      "Domain": "localhost",
+      "MaxAge": 2592000,
+      "Secure": false,
+      "HttpOnly": true
+    },
+    "IdGenerator":   "base64",
+    "Serializer":    "gob",
+    "CookieHandler": "aes_gcm",
+    "KeyPairs": [
+      "pR6kDdHYqNMRO74kUxFiGgpv3A6qKFeCY6IDHxDH8NY"
+    ]
+  },
+  "Snowflake": {
+    "Epoch": 1288834974657,
+    "NodeBits": 10,
+    "StepBits": 12
+  },
+  "AppInfo": {
+    "Env": "dev"
+  }
+}
