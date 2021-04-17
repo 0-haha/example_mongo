@@ -3,7 +3,7 @@ version: '3'
 services:
   demo-api-mongo:
     build: .
-    image: golang:1.14
+    image: golang:1.15
     volumes:
       - ./:/go/src
       - ./.netrc:/root/.netrc

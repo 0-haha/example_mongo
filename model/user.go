@@ -3,7 +3,7 @@ package model
 import (
 	"context"
 	"encoding/gob"
-	"github.com/secure-for-ai/secureai-microsvs/db"
+	"github.com/secure-for-ai/secureai-microsvs/db/mongodb"
 	"github.com/secure-for-ai/secureai-microsvs/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -137,7 +137,7 @@ func ListUser(username string, page, perPage int64) (int64, *[]UserInfo, error) 
 }
 
 /* Database Transaction */
-func dbTxInsertUser(client *db.MongoDBClient, userInfo *UserInfo) error {
+func dbTxInsertUser(client *mongodb.Client, userInfo *UserInfo) error {
 	query := bson.M{
 		"username": userInfo.Username,
 	}
@@ -155,13 +155,13 @@ func dbTxInsertUser(client *db.MongoDBClient, userInfo *UserInfo) error {
 }
 
 /* Database Operation: Insert, Deletion, Update, Select */
-func findUser(ctx context.Context, client *db.MongoDBClient, filter interface{}) (user *UserInfo, err error) {
+func findUser(ctx context.Context, client *mongodb.Client, filter interface{}) (user *UserInfo, err error) {
 	user = &UserInfo{}
 	err = client.FindOne(ctx, constant.TableUser, filter, user)
 	return user, err
 }
 
-func insertUser(ctx context.Context, client *db.MongoDBClient, userInfo interface{}) (interface{}, error) {
+func insertUser(ctx context.Context, client *mongodb.Client, userInfo interface{}) (interface{}, error) {
 	result, err := client.InsertOne(ctx, constant.TableUser, userInfo)
 	if err != nil {
 		return nil, err
@@ -169,7 +169,7 @@ func insertUser(ctx context.Context, client *db.MongoDBClient, userInfo interfac
 	return result.InsertedID, err
 }
 
-func updateUser(ctx context.Context, client *db.MongoDBClient,
+func updateUser(ctx context.Context, client *mongodb.Client,
 	filter interface{}, userInfo interface{}) error {
 	_, err := client.UpdateOne(ctx, constant.TableUser, filter, userInfo)
 	if err != nil {
@@ -178,7 +178,7 @@ func updateUser(ctx context.Context, client *db.MongoDBClient,
 	return err
 }
 
-func deleteUser(ctx context.Context, client *db.MongoDBClient, filter interface{}) error {
+func deleteUser(ctx context.Context, client *mongodb.Client, filter interface{}) error {
 	_, err := client.DeleteOne(ctx, constant.TableUser, filter)
 	if err != nil {
 		return err
@@ -186,12 +186,12 @@ func deleteUser(ctx context.Context, client *db.MongoDBClient, filter interface{
 	return err
 }
 
-func listUserCount(ctx context.Context, client *db.MongoDBClient, filter interface{}) (count int64, err error) {
+func listUserCount(ctx context.Context, client *mongodb.Client, filter interface{}) (count int64, err error) {
 	count, err = client.GetTable(constant.TableUser).CountDocuments(ctx, filter)
 	return count, err
 }
 
-func listUser(ctx context.Context, client *db.MongoDBClient, filter interface{}, page, perPage int64) (data *[]UserInfo, err error) {
+func listUser(ctx context.Context, client *mongodb.Client, filter interface{}, page, perPage int64) (data *[]UserInfo, err error) {
 	data = &[]UserInfo{}
 	findOptions := options.Find()
 	// Sort by `updateTime` field descending

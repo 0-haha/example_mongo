@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 	"github.com/secure-for-ai/secureai-microsvs/cache"
-	"github.com/secure-for-ai/secureai-microsvs/db"
+	"github.com/secure-for-ai/secureai-microsvs/db/mongodb"
 	"github.com/secure-for-ai/secureai-microsvs/session"
 	"github.com/secure-for-ai/secureai-microsvs/snowflake"
 	"github.com/secure-for-ai/secureai-microsvs/util"
@@ -14,7 +14,7 @@ import (
 )
 
 type Config struct {
-	MongoDB   db.MongoDBConf
+	MongoDB   mongodb.Config
 	Redis     cache.RedisConf
 	Session   session.HybridStoreConf
 	Snowflake snowflake.NodeConf
@@ -22,7 +22,7 @@ type Config struct {
 }
 
 var Conf *Config
-var MongoDBClient *db.MongoDBClient
+var MongoDBClient *mongodb.Client
 var RedisClient *cache.RedisClient
 var SessionStore *session.HybridStore
 var SnowflakeNode *snowflake.Node
@@ -111,7 +111,7 @@ func initConf() {
 func intiMongoDB() {
 	log.Println("Begin init mongoDB")
 
-	client, err := db.NewMongoDB(Conf.MongoDB)
+	client, err := mongodb.NewMongoDB(Conf.MongoDB)
 
 	if err != nil {
 		log.Println("unable to init mongoDB")

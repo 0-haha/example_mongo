@@ -16,7 +16,11 @@
     
     Then, `go mod download` will be able to pull the private repo if
     ssh-key is correctly configured.
-    
+
+- Setup the environment `GOPRIVATE=github.com/secure-for-ai` in IDE such as 
+  goland so that we can pull our private package directly instead of pulling
+  through the proxy, which is the default pulling.
+
 - Start docker compose
     ```bash
     docker-compose up
